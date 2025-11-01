@@ -212,7 +212,7 @@ namespace instruments
                 }
                 note.pitch = 1; // Reset the pitch, we don't want any pitch bend for drum
             }
-            else if (note.instrument == "mic")
+            else if (note.instrument == "mic" || note.instrument.StartsWith("zmic"))
             {
                 Random rnd = new Random();
                 int rNum = rnd.Next(0, 5); // A number between 0 and 4
