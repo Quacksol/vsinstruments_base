@@ -178,7 +178,7 @@ namespace instruments
                                     play = false;
                                 }
                                 assetLocation = instrumentFileLocation + "/" + octaveMap[note.octave];
-                                if (instrument == "mic")
+                                if (instrument == "mic" || instrument.StartsWith("zmic"))
                                 {
                                     Random rnd = new Random();
                                     int rNum = rnd.Next(0, 5); // A number between 0 and 4
