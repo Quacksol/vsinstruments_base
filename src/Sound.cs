@@ -144,8 +144,7 @@ namespace instruments
             // Check if a chord in the buffer should play.
             nowTime += (dt * 1000);
             int chordCount = chordBuffer.Count;
-            if (chordCount == 0)
-                ;
+            if (chordCount == 0) { }
             else
                 for (int i = 0; i < chordCount; i++)
                 {
@@ -197,6 +196,23 @@ namespace instruments
                                             assetLocation += "do";
                                             break;
                                         case 4:
+                                            assetLocation += "la";
+                                            break;
+                                    }
+                                }
+                                else if (instrument == "michigh")
+                                {
+                                    Random rnd = new Random();
+                                    int rNum = rnd.Next(0, 3); // A number between 0 and 2
+                                    switch (rNum)
+                                    {
+                                        case 0:
+                                            assetLocation += "ba";
+                                            break;
+                                        case 1:
+                                            assetLocation += "da";
+                                            break;
+                                        case 2:
                                             assetLocation += "la";
                                             break;
                                     }
