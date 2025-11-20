@@ -212,7 +212,7 @@ namespace instruments
                 }
                 note.pitch = 1; // Reset the pitch, we don't want any pitch bend for drum
             }
-            else if (note.instrument == "mic" || note.instrument.StartsWith("zmic"))
+            else if (note.instrument == "mic")
             {
                 Random rnd = new Random();
                 int rNum = rnd.Next(0, 5); // A number between 0 and 4
@@ -235,6 +235,24 @@ namespace instruments
                         break;
                 }
             }
+            else if (note.instrument == "michigh")
+            {
+                Random rnd = new Random();
+                int rNum = rnd.Next(0, 3); // A number between 0 and 2
+                switch (rNum)
+                {
+                    case 0:
+                        noteString += "ba";
+                        break;
+                    case 1:
+                        noteString += "da";
+                        break;
+                    case 2:
+                        noteString += "la";
+                        break;
+                }
+            }
+
             IClientWorldAccessor clientWorldAccessor = clientApi.World;
             Sound sound = new Sound(clientWorldAccessor, note.positon, note.pitch, soundLocations[note.instrument] + noteString, note.ID, config.playerVolume);
             if (sound.sound == null)
