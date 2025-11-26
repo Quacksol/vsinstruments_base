@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic; // Lists
 using System.Diagnostics; // debug todo remove
 using System.IO; // Open files
-using System.Text; // UTF8 stuff
+using System.Text;
 
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public class RecursiveFileProcessor
     {
@@ -37,7 +37,7 @@ namespace instruments
         }
         public static bool ReadFile(string path, ref string fileData)
         {
-            System.IO.FileStream stream;
+            FileStream stream;
             if (File.Exists(path))
             {
                 stream = File.OpenRead(path);

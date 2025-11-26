@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;  // Debug todo remove
 using Vintagestory.API.Client;
 using Vintagestory.API.Common;
-using Vintagestory.API.MathTools; // vec3D
+using Vintagestory.API.MathTools;
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public class Sound
     {
@@ -142,7 +142,7 @@ namespace instruments
             }
 
             // Check if a chord in the buffer should play.
-            nowTime += (dt * 1000);
+            nowTime += dt * 1000;
             int chordCount = chordBuffer.Count;
             if (chordCount == 0)
             {
@@ -374,7 +374,7 @@ namespace instruments
 
         public bool CheckShouldStop(float currentTime)
         {
-            if (currentTime > (startTime + duration))
+            if (currentTime > startTime + duration)
                 return true;
             return false;
         }

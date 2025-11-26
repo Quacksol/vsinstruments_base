@@ -5,9 +5,9 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Common;
 using Vintagestory.API.Config;  // Lang stuff
 using Vintagestory.API.MathTools;
-using Vintagestory.GameContent;     // GUIHandbook
+using Vintagestory.GameContent;
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public class NoteGUI : HudElement
     {
@@ -106,7 +106,7 @@ namespace instruments
                 .AddShadedDialogBG(bgBounds)
                 .AddDialogTitleBar("Song select", Close)
                 .BeginChildElements(bgBounds)
-                .AddTextInput(searchFieldBounds, (string newText) =>
+                .AddTextInput(searchFieldBounds, (newText) =>
                 {
                     filter = newText;
                     FilterSongs();
@@ -119,7 +119,7 @@ namespace instruments
                 //.AddInteractiveElement(new GuiElementHandbookList(capi, stackListBounds, (int index) => {ButtonPressed(index);}, shownStackListItems), "stacklist")
 
                 .EndClip()
-                .AddVerticalScrollbar((float value) =>
+                .AddVerticalScrollbar((value) =>
                 {
                     GuiElementFlatList stacklist = SingleComposer.GetFlatList("stacklist");
                     stacklist.insideBounds.fixedY = 3 - value;
@@ -148,7 +148,7 @@ namespace instruments
             GuiElementScrollbar scrollbar = SingleComposer.GetScrollbar("scrollbar");
             GuiElementFlatList stacklist = SingleComposer.GetFlatList("stacklist");
             scrollbar.SetHeights(
-                (float)listHeight,
+                listHeight,
                 (float)stacklist.insideBounds.fixedHeight
                 );
         }

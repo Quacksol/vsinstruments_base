@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Vintagestory.API.Common;
-using System.IO;  // Directory, Path
+using System.IO;
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public class InstrumentSettings
     {

@@ -12,7 +12,7 @@ using Vintagestory.API.Server;
 using Vintagestory.GameContent;
 
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     internal class MusicBlock : Block
     {
@@ -117,7 +117,7 @@ namespace instruments
                 packet.fromClientID = ID;
                 IServerNetworkChannel ch = (Api as ICoreServerAPI).Network.GetChannel("abc");
                 ch.BroadcastPacket(packet);
-                ABCParsers.GetInstance().Remove((Api as ICoreServerAPI), null, abcp);
+                ABCParsers.GetInstance().Remove(Api as ICoreServerAPI, null, abcp);
             }
         }
         public void OnUse(IPlayer byPlayer)
@@ -157,7 +157,7 @@ namespace instruments
                     packet.fromClientID = ID;
                     IServerNetworkChannel ch = (Api as ICoreServerAPI).Network.GetChannel("abc");
                     ch.BroadcastPacket(packet);
-                    ABCParsers.GetInstance().Remove((Api as ICoreServerAPI), byPlayer, abcp);
+                    ABCParsers.GetInstance().Remove(Api as ICoreServerAPI, byPlayer, abcp);
                 }
                 isPlaying = !isPlaying;
             }
@@ -293,7 +293,7 @@ namespace instruments
             ItemStack item = inventory[slotid].Itemstack;
             if (item != null)
             {
-                InstrumentItem dummy = (item.Item as InstrumentItem);
+                InstrumentItem dummy = item.Item as InstrumentItem;
                 if (dummy != null)
                     instrumentType = dummy.instrument;
             }

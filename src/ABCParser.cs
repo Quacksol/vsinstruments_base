@@ -12,7 +12,7 @@ using Vintagestory.API.Server;
  * When a band plays, multiple parsers will exist, each with the unique player ID.
  */
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public enum Accidental
     {

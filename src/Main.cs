@@ -9,7 +9,7 @@ using Vintagestory.API.Config; // GlobalConstants
 using Vintagestory.API.MathTools; // vec3D
 using Vintagestory.API.Server;
 
-namespace instruments
+namespace vsinstruments_base.src
 {
     public enum PlayMode
     {
@@ -25,8 +25,8 @@ namespace instruments
         public float pitch;
         public NoteFrequency(string id, float p)
         {
-            this.ID = id;
-            this.pitch = p;
+            ID = id;
+            pitch = p;
         }
     }
 
@@ -107,7 +107,7 @@ namespace instruments
                     api.StoreModConfig(config, "instruments.json");
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 api.Logger.Error("Could not load instruments config, using default values...");
                 config = new InstrumentSettings();
@@ -266,7 +266,7 @@ namespace instruments
         {
             if (!clientSideReady) return;
             //Sound sound = soundList.Find(x => x.ID.Contains(note.ID));
-            Sound sound = soundList.Find(x => (x.ID == note.ID));
+            Sound sound = soundList.Find(x => x.ID == note.ID);
             if (sound == null)
                 return;
             sound.UpdateSound(note.positon, note.pitch);
@@ -275,7 +275,7 @@ namespace instruments
         {
             if (!clientSideReady) return;
             //Sound sound = soundList.Find(x => x.ID.Contains(note.ID));
-            Sound sound = soundList.Find(x => (x.ID == note.ID));
+            Sound sound = soundList.Find(x => x.ID == note.ID);
             if (sound == null)
                 return;
             sound.StopSound();
@@ -298,7 +298,7 @@ namespace instruments
             if (!setupDone)
                 FirstTimeSetup();
 
-            SoundManager sm = soundManagers.Find(x => (x.sourceID == serverPacket.fromClientID));
+            SoundManager sm = soundManagers.Find(x => x.sourceID == serverPacket.fromClientID);
             if (sm == null)
             {
                 // This was the first packet from the server with data from this client. Need to register a new SoundManager.
@@ -331,7 +331,7 @@ namespace instruments
             if (player == null)
                 return;
 
-            SoundManager sm = soundManagers.Find(x => (x.sourceID == serverPacket.fromClientID));
+            SoundManager sm = soundManagers.Find(x => x.sourceID == serverPacket.fromClientID);
             if (sm != null)
             {
                 if (sm.sourceID == player.ClientId)
@@ -472,7 +472,7 @@ namespace instruments
         }
         public void SendSongs(IServerPlayer byPlayer)
         {
-            string serverDir = InstrumentModCommon.config.abcServerLocation;
+            string serverDir = config.abcServerLocation;
             if (!RecursiveFileProcessor.DirectoryExists(serverDir))
                 return; // Server has no abcs, do nothing
 
@@ -517,7 +517,7 @@ namespace instruments
                 {
                     // The contained string is NOT a full song, but a link to it on the server.
                     // Find this file, load it, and make the abcParser in the same way
-                    string fileLocation = InstrumentModCommon.config.abcServerLocation;
+                    string fileLocation = config.abcServerLocation;
                     RecursiveFileProcessor.ReadFile(fileLocation + Path.DirectorySeparatorChar + abcData.abcData, ref abcSong);
                 }
                 else

@@ -9,7 +9,7 @@ using Vintagestory.API.Config;  // Lang
 using Vintagestory.API.MathTools; // vec3D
 using Vintagestory.API.Util;  // ToolModes
 
-namespace instruments
+namespace vsinstruments_base.src
 {
 
     public class InstrumentItem : Item
