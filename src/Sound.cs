@@ -149,6 +149,7 @@ namespace instruments
                 // no chords to process
             }
             else
+            {
                 for (int i = 0; i < chordCount; i++)
                 {
                     if (chordBuffer[i].CheckShouldStart(nowTime))
@@ -216,6 +217,7 @@ namespace instruments
                         i--;
                     }
                 }
+            }
 
             // Now, check if the currently playing sounds need to stop.
             int soundCount = soundsOngoing.Count;
