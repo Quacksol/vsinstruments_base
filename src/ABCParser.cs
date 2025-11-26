@@ -182,7 +182,7 @@ namespace instruments
                     case '%':
                     case '\n':
                     case '\r':
-                        List<char> checkList = new List<char> { '\n', '\r' };
+                        List<char> checkList = ['\n', '\r'];
                         SkipCharsUntil(file, ref charIndex, checkList); // Skip until newline
                         charIndex++;
                         timeout = 32;
@@ -203,20 +203,20 @@ namespace instruments
                     case '\"': // I think this is a temporary kig sig. Although, it makes everythiong sound worse. No idea, just ignore it
                         //ParseKeySig(file, ref charIndex, true);  // True means put it in the tempKeySig
                         charIndex++;
-                        checkList = new List<char> { '\"' };
+                        checkList = ['\"'];
                         SkipCharsUntil(file, ref charIndex, checkList); // Skip until end quote
                         charIndex++;
                         break;
 
                     case '+': // Decorations, ignore everything until the next + or newline
                         charIndex++;
-                        checkList = new List<char> { '+', '\n' };
+                        checkList = ['+', '\n'];
                         SkipCharsUntil(file, ref charIndex, checkList); // Skip until end quote
                         charIndex++;
                         break;
                     case '!': // More decorations, ignore everything until the next ! or newline
                         charIndex++;
-                        checkList = new List<char> { '!', '\n' };
+                        checkList = ['!', '\n'];
                         SkipCharsUntil(file, ref charIndex, checkList); // Skip until end quote
                         charIndex++;
                         break;
@@ -255,7 +255,7 @@ namespace instruments
                     case 'B': // Source, or a lot more likely, a B note.
                         if (file[charIndex + 1] == ':')
                         {
-                            checkList = new List<char> { '\n', '\r' };
+                            checkList = ['\n', '\r'];
                             SkipCharsUntil(file, ref charIndex, checkList); // Skip until newline
                             charIndex++;
                         }
@@ -413,10 +413,10 @@ namespace instruments
                     else
                     {
                         float duration = (chordStartTime + nextChordDuration) - currentTime;
-                        nextChord = new Chord();
+                        nextChord = new();
                         nextChord.startTime = currentTime;
                         nextChord.duration = duration;
-                        Note n = new Note();
+                        Note n = new();
                         n.duration = duration;
                         n.key = 'z';
                         nextChord.notes.Add(n);
@@ -428,10 +428,10 @@ namespace instruments
                 {
                     IPlayer player = Array.Find(serverAPI.World.AllOnlinePlayers, x => x.ClientId == playerID);
                     if(player != null)
-                        position = new Vec3d(player.Entity.Pos.X, player.Entity.Pos.Y, player.Entity.Pos.Z);
+                        position = new(player.Entity.Pos.X, player.Entity.Pos.Y, player.Entity.Pos.Z);
                 }
 
-                ABCUpdateFromServer packet = new ABCUpdateFromServer();
+                ABCUpdateFromServer packet = new();
                 packet.newChord = nextChord;
                 packet.positon = position;
                 packet.fromClientID = playerID;
@@ -447,12 +447,12 @@ namespace instruments
                  //SetKeySig(); // This is not supposed to happen, makes other songs go all fucky
              }*/
 
-            nextChord = new Chord();
+            nextChord = new();
             nextChord.startTime = chordStartTime;
         }
         private bool ParseNote(string inString, ref int i)
         {
-            Note newNote = new Note();
+            Note newNote = new();
             int noteIndex = -1;
             int octaveIndex = 3; // 4 is middle, but 2 sounds MUCH better - start there
             bool sharpDetected = false;
@@ -645,7 +645,7 @@ namespace instruments
         private void ParseMeter(string inString, ref int i)
         {
             // Parse meter, which may be used intead of L (default note length)
-            List<char> checkList = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C' };
+            List<char> checkList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'C'];
             SkipCharsUntil(inString, ref i, checkList);
 
             if (inString[i] == 'C')
@@ -684,13 +684,13 @@ namespace instruments
             char key;
             bool minor = false;
             Accidental acc = Accidental.natural;
-            List<char> checkList = new List<char> { 'A', 'B', 'C', 'D', 'E', 'F', 'G', '\n' };
+            List<char> checkList = ['A', 'B', 'C', 'D', 'E', 'F', 'G', '\n'];
             SkipCharsUntil(inString, ref i, checkList);
             key = inString[i];
 
             while (true)
             {
-                checkList = new List<char> { '#', 'b', 'm', ' ', '\n', '\"' };
+                checkList = ['#', 'b', 'm', ' ', '\n', '\"'];
                 SkipCharsUntil(inString, ref i, checkList);
                 if (inString[i] == '#') // Sharp. There may be a minor, so repeat this section
                 {
@@ -718,7 +718,7 @@ namespace instruments
                         // Every other case - if we received just an m, or it says min/minor, it's a minor.
                         minor = true;
                     }
-                    checkList = new List<char> { '\n' }; // Ignore anything else, go to newline
+                    checkList = ['\n']; // Ignore anything else, go to newline
                     SkipCharsUntil(inString, ref i, checkList);
                     break;
                 }
@@ -926,7 +926,7 @@ namespace instruments
             // Possible forms:
             // Q: 90        - There are 90 beats per minute
             // Q: 1/4=90    - There are 90 1/4 notes per minute
-            List<char> checkList = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            List<char> checkList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
             SkipCharsUntil(inString, ref i, checkList);
             int noteDuration = GetIntFromStream(inString, ref i);
             // if a '/' is present, it means that they have specified which note to assign the tempo to, and we must make calculations based on this
@@ -965,7 +965,7 @@ namespace instruments
         {
             // Parse the default note length, to find the default note length. 
             // Remove the expected ':' character
-            List<char> checkList = new List<char> { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            List<char> checkList = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
             SkipCharsUntil(inString, ref i, checkList);
             // Get the value for the length from the fractional form (ex: 4/4)
             defaultNoteLength = GetIntFromStream(inString, ref i);
@@ -979,12 +979,12 @@ namespace instruments
         }
         private void ParseComposer(string inString, ref int i)
         {
-            List<char> checkList = new List<char> { '\n' };
+            List<char> checkList = ['\n'];
             SkipCharsUntil(inString, ref i, checkList);
         }
         private void ParseGroup(string inString, ref int i)
         {
-            List<char> checkList = new List<char> { '\n' };
+            List<char> checkList = ['\n'];
             SkipCharsUntil(inString, ref i, checkList);
         }
         private void Reset()
@@ -1001,12 +1001,12 @@ namespace instruments
             tuplet = false;
             endOfFile = false;
 
-            nextChord = new Chord();
-            chordBuffer = new List<Chord>();
+            nextChord = new();
+            chordBuffer = [];
             startSync = true;
             charIndex = 0;
             repeatStartIndex = -1;
-            doneRepeats = new List<int>();
+            doneRepeats = [];
 
             accidentals = new Accidental[7, 8];
             currentKeySig = C;
@@ -1057,13 +1057,13 @@ namespace instruments
         ICoreServerAPI api;
         private ABCParsers()
         {
-            list = new List<ABCParser>();
+            list = [];
         }
         public static ABCParsers GetInstance()
         {
             if (_instance != null)
                 return _instance;
-            return _instance = new ABCParsers();
+            return _instance = new();
         }
         public void SetAPI(ICoreServerAPI newApi)
         {
@@ -1094,14 +1094,14 @@ namespace instruments
                             BadABC(sapi, player, abcp.charIndex);
                     }
                     // TODO copied from in instrument. Make into a single function pls
-                    ABCStopFromServer packet = new ABCStopFromServer(); // todo copied from main, make a function
+                    ABCStopFromServer packet = new(); // todo copied from main, make a function
                     packet.fromClientID = abcp.playerID;
                     IServerNetworkChannel ch = api.Network.GetChannel("abc");
                     ch.BroadcastPacket(packet);
 
                     if (!abcp.isPlayer)
                     {
-                        BlockPos bp = new BlockPos((int)abcp.position.X, (int)abcp.position.Y, (int)abcp.position.Z);
+                        BlockPos bp = new((int)abcp.position.X, (int)abcp.position.Y, (int)abcp.position.Z);
                         BlockEntity block = sapi.World.BlockAccessor.GetBlockEntity(bp);
                         if (block != null)
                             ((BEMusicBlock)block).isPlaying = false;
@@ -1124,7 +1124,7 @@ namespace instruments
             if (bandName == "")
             {
                 // Just a bog standard parser
-                ABCParser abcp = new ABCParser(sapi, byPlayer.ClientId, byPlayer.PlayerName, songData, instrument, bandName, 0);
+                ABCParser abcp = new(sapi, byPlayer.ClientId, byPlayer.PlayerName, songData, instrument, bandName, 0);
                 ExitStatus parseOk = abcp.Start();
                 if (parseOk != ExitStatus.allGood)
                     BadABC(sapi, byPlayer, abcp.charIndex);
@@ -1138,7 +1138,7 @@ namespace instruments
             {
                 float masterTime = CheckBand(sapi, byPlayer, bandName);
 
-                ABCParser abcp = new ABCParser(sapi, byPlayer.ClientId, byPlayer.PlayerName, songData, instrument, bandName, masterTime);
+                ABCParser abcp = new(sapi, byPlayer.ClientId, byPlayer.PlayerName, songData, instrument, bandName, masterTime);
                 ExitStatus parseOk = abcp.Start();
                 if (parseOk != ExitStatus.allGood)
                     BadABC(sapi, byPlayer, abcp.charIndex);
@@ -1152,7 +1152,7 @@ namespace instruments
             if (bandName == "")
             {
                 // Just a bog standard parser
-                ABCParser abcp = new ABCParser(sapi, byPlayer.ClientId, ownerID, pos, ownerName, songData, instrument, bandName, 0);
+                ABCParser abcp = new(sapi, byPlayer.ClientId, ownerID, pos, ownerName, songData, instrument, bandName, 0);
                 ExitStatus parseOk = abcp.Start();
                 if (parseOk != ExitStatus.allGood)
                     BadABC(sapi, byPlayer, abcp.charIndex);
@@ -1166,7 +1166,7 @@ namespace instruments
             {
                 float masterTime = CheckBand(sapi, byPlayer, bandName);
 
-                ABCParser abcp = new ABCParser(sapi, byPlayer.ClientId, ownerID, pos, ownerName, songData, instrument, bandName, masterTime);
+                ABCParser abcp = new(sapi, byPlayer.ClientId, ownerID, pos, ownerName, songData, instrument, bandName, masterTime);
                 ExitStatus parseOk = abcp.Start();
                 if (parseOk != ExitStatus.allGood) // TODO check that the thing is actually destroyed
                     BadABC(sapi, byPlayer, abcp.charIndex);
@@ -1194,7 +1194,7 @@ namespace instruments
         private float CheckBand(ICoreServerAPI sapi, IPlayer byPlayer, string bandName)
         {
             bool bandFound = false;
-            List<string> bandPlayerNames = new List<string>();
+            List<string> bandPlayerNames = [];
             float masterTime = 0;
             foreach (ABCParser p in list)
             {
