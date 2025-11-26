@@ -111,8 +111,8 @@ namespace instruments
 
                 if (GetPlayMode(slot) != PlayMode.abc)
                 {
-                    Vec3d pos = new Vec3d(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
-                    NoteStart newNote = new NoteStart();
+                    Vec3d pos = new(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
+                    NoteStart newNote = new();
                     newNote.pitch = currentNote.pitch;
                     newNote.positon = pos;
                     newNote.instrument = instrument;
@@ -148,8 +148,8 @@ namespace instruments
                 // Additionally, update the sound packet
                 if (GetPlayMode(slot) != PlayMode.abc)
                 {
-                    Vec3d pos = new Vec3d(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
-                    NoteUpdate newNote = new NoteUpdate();
+                    Vec3d pos = new(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
+                    NoteUpdate newNote = new();
                     newNote.pitch = currentNote.pitch;
                     newNote.positon = pos;
                     IClientNetworkChannel ch = capi.Network.GetChannel("noteTest");
@@ -168,7 +168,7 @@ namespace instruments
             {
                 if (GetPlayMode(slot) != PlayMode.abc)
                 {
-                    NoteStop newNote = new NoteStop();
+                    NoteStop newNote = new();
                     IClientNetworkChannel ch = capi.Network.GetChannel("noteTest");
                     ch.SendPacket(newNote);
                 }
@@ -323,7 +323,7 @@ namespace instruments
         private bool ToggleGui()
         {
             Action<string> sb = SetBand;
-            ModeSelectGUI modeDialog = new ModeSelectGUI(capi, SetMode, sb, Definitions.GetInstance().GetBandName());
+            ModeSelectGUI modeDialog = new(capi, SetMode, sb, Definitions.GetInstance().GetBandName());
             modeDialog.TryOpen();
 
             return true;
@@ -348,7 +348,7 @@ namespace instruments
         }
         private void ABCSendStart(string fileData, bool isServerOwned)
         {
-            ABCStartFromClient newABC = new ABCStartFromClient();
+            ABCStartFromClient newABC = new();
             newABC.abcData = fileData;
             newABC.instrument = instrument;
             newABC.bandName = Definitions.GetInstance().GetBandName();
@@ -359,7 +359,7 @@ namespace instruments
         }
         private void ABCSendStop()
         {
-            ABCStopFromClient newABC = new ABCStopFromClient();
+            ABCStopFromClient newABC = new();
             IClientNetworkChannel ch = capi.Network.GetChannel("abc");
             ch.SendPacket(newABC);
         }
@@ -370,7 +370,7 @@ namespace instruments
             if (Definitions.GetInstance().UpdateSongList(capi))
             {
                 Action<string> sb = SetBand;
-                SongSelectGUI songGui = new SongSelectGUI(capi, PlaySong, Definitions.GetInstance().GetSongList(), sb, Definitions.GetInstance().GetBandName());
+                SongSelectGUI songGui = new(capi, PlaySong, Definitions.GetInstance().GetSongList(), sb, Definitions.GetInstance().GetBandName());
                 songGui.TryOpen();
             }
         }
@@ -443,7 +443,7 @@ namespace instruments
         {
             if (_instance != null)
                 return _instance;
-            return _instance = new Definitions();
+            return _instance = new();
         }
 
         public void SetBandName(string bn)

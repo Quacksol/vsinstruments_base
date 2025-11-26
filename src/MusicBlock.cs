@@ -58,7 +58,7 @@ namespace instruments
         public BEMusicBlock()
         {
             // Set up inventory here - I'm copying necessaries' mailbox, seems simple enough.
-            inventory = new MusicBlockInventory(null, null);
+            inventory = new(null, null);
             inventory.SlotModified += OnSlotModified;
         }
         public override InventoryBase Inventory
@@ -113,7 +113,7 @@ namespace instruments
             if (isPlaying)
             {
                 ABCParser abcp = ABCParsers.GetInstance().FindByID(ID);
-                ABCStopFromServer packet = new ABCStopFromServer(); // todo copied from main, make a function
+                ABCStopFromServer packet = new(); // todo copied from main, make a function
                 packet.fromClientID = ID;
                 IServerNetworkChannel ch = (Api as ICoreServerAPI).Network.GetChannel("abc");
                 ch.BroadcastPacket(packet);
@@ -153,7 +153,7 @@ namespace instruments
                 else
                 {
                     ABCParser abcp = ABCParsers.GetInstance().FindByID(ID);
-                    ABCStopFromServer packet = new ABCStopFromServer(); // todo copied from main, make a function
+                    ABCStopFromServer packet = new(); // todo copied from main, make a function
                     packet.fromClientID = ID;
                     IServerNetworkChannel ch = (Api as ICoreServerAPI).Network.GetChannel("abc");
                     ch.BroadcastPacket(packet);
@@ -276,7 +276,7 @@ namespace instruments
 
                     if (musicBlockGUI == null)
                     {
-                        musicBlockGUI = new MusicBlockGUI(DialogTitle, Inventory, Pos, Api as ICoreClientAPI, blockName, bandName, songName);
+                        musicBlockGUI = new(DialogTitle, Inventory, Pos, Api as ICoreClientAPI, blockName, bandName, songName);
                         musicBlockGUI.OnClosed += () =>
                         {
                             musicBlockGUI = null;
@@ -315,7 +315,7 @@ namespace instruments
         {
             if (_instance != null)
                 return _instance;
-            return _instance = new MusicBlockManager();
+            return _instance = new();
         }
         public void Reset()
         {

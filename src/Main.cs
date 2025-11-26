@@ -103,7 +103,7 @@ namespace instruments
                 config = api.LoadModConfig<InstrumentSettings>("instruments.json");
                 if (config == null)
                 {
-                    config = new InstrumentSettings();
+                    config = new();
                     api.StoreModConfig(config, "instruments.json");
                 }
             }
@@ -128,13 +128,13 @@ namespace instruments
         ICoreClientAPI clientApi;
         string playerHeldItem; // The item the player is holding. If this changes, stop playback.
         bool thisClientPlaying; // Is this client currently playing, or is some other client playing?
-        readonly List<Sound> soundList = new List<Sound>(); // For playing single notes sent by players, non-abc style
+        readonly List<Sound> soundList = []; // For playing single notes sent by players, non-abc style
         List<SoundManager> soundManagers;
         bool clientSideEnable;
         bool clientSideReady = false;
         bool setupDone = false;
 
-        private readonly Dictionary<string, string> soundLocations = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> soundLocations = [];
 
 
         long listenerIDClient = -1;
@@ -163,7 +163,7 @@ namespace instruments
                 .SetMessageHandler<ABCSendSongFromServer>(SongFromServer)
                 ;
 
-            soundManagers = new List<SoundManager>();
+            soundManagers = [];
 
             thisClientPlaying = false;
             MusicBlockManager.GetInstance().Reset(); // I think there's a manager for both Server and Client, so reset it I guess
@@ -182,7 +182,7 @@ namespace instruments
                             return TextCommandResult.Success("ABC playback enabled!");
                         case "disable":
                             clientSideEnable = false;
-                            ABCStopFromServer dummy = new ABCStopFromServer();
+                            ABCStopFromServer dummy = new();
                             dummy.fromClientID = clientApi.World.Player.ClientId;
                             StopSounds(dummy);
                             return TextCommandResult.Success("ABC playback disabled!");
@@ -234,7 +234,7 @@ namespace instruments
             }
             else if (note.instrument == "mic" || note.instrument.StartsWith("zmic"))
             {
-                Random rnd = new Random();
+                Random rnd = new();
                 int rNum = rnd.Next(0, 5); // A number between 0 and 4
                 switch (rNum)
                 {
@@ -256,7 +256,7 @@ namespace instruments
                 }
             }
             IClientWorldAccessor clientWorldAccessor = clientApi.World;
-            Sound sound = new Sound(clientWorldAccessor, note.positon, note.pitch, soundLocations[note.instrument] + noteString, note.ID, config.playerVolume);
+            Sound sound = new(clientWorldAccessor, note.positon, note.pitch, soundLocations[note.instrument] + noteString, note.ID, config.playerVolume);
             if (sound.sound == null)
                 Debug.WriteLine("Sound creation failed!");
             else
@@ -303,7 +303,7 @@ namespace instruments
             {
                 // This was the first packet from the server with data from this client. Need to register a new SoundManager.
                 float startTime = serverPacket.newChord.startTime;
-                sm = new SoundManager(clientApi.World, serverPacket.fromClientID, soundLocations[serverPacket.instrument], serverPacket.instrument, startTime);
+                sm = new(clientApi.World, serverPacket.fromClientID, soundLocations[serverPacket.instrument], serverPacket.instrument, startTime);
                 soundManagers.Add(sm);
             }
             if (listenerIDClient == -1)
@@ -380,7 +380,7 @@ namespace instruments
                 if (currentPlayerItem != playerHeldItem) // Check that the player is still holding an instrument
                 {
                     // TODO copied from in instrument. Make into a single function pls
-                    ABCStopFromClient newABC = new ABCStopFromClient();
+                    ABCStopFromClient newABC = new();
                     IClientNetworkChannel ch = clientApi.Network.GetChannel("abc");
                     ch.SendPacket(newABC);
                     thisClientPlaying = false;
@@ -476,7 +476,7 @@ namespace instruments
             if (!RecursiveFileProcessor.DirectoryExists(serverDir))
                 return; // Server has no abcs, do nothing
 
-            List<string> abcFiles = new List<string>();
+            List<string> abcFiles = [];
             RecursiveFileProcessor.ProcessDirectory(serverDir, serverDir + Path.DirectorySeparatorChar, ref abcFiles);
             if (abcFiles.Count == 0)
             {
@@ -484,7 +484,7 @@ namespace instruments
             }
             foreach (string song in abcFiles)
             {
-                ABCSendSongFromServer packet = new ABCSendSongFromServer();
+                ABCSendSongFromServer packet = new();
                 packet.abcFilename = song;
                 serverChannelABC.SendPacket(packet, byPlayer);
             }
@@ -547,7 +547,7 @@ namespace instruments
             if (abcp != null)
             {
                 ABCParsers.GetInstance().Remove(serverAPI, fromPlayer, abcp);
-                ABCStopFromServer packet = new ABCStopFromServer();
+                ABCStopFromServer packet = new();
                 packet.fromClientID = clientID;
                 IServerNetworkChannel ch = serverAPI.Network.GetChannel("abc");
                 ch.BroadcastPacket(packet);

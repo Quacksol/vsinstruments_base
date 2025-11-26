@@ -16,7 +16,7 @@ namespace instruments
 
         public Sound(IClientWorldAccessor client, Vec3d pos, float pitchModifier, string assetLocation, int id, float volume, bool play = true)
         {
-            SoundParams soundData = new SoundParams(new AssetLocation("instruments", assetLocation + ".ogg"));
+            SoundParams soundData = new(new AssetLocation("instruments", assetLocation + ".ogg"));
             soundData.Volume = volume;
             sound = client.LoadSound(soundData);
             if (sound != null)
@@ -66,8 +66,8 @@ namespace instruments
         private readonly float volume;
         public readonly string instrument;
 
-        private readonly Dictionary<int, string> drumMap = new Dictionary<int, string>();
-        private readonly Dictionary<int, string> octaveMap = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> drumMap = [];
+        private readonly Dictionary<int, string> octaveMap = [];
 
         private readonly float[,] frequencies = new float[7, 3] {
             {0.9441f, 1.0000f, 1.0595f },  // A
@@ -106,11 +106,11 @@ namespace instruments
             }
             drumMap.Add(i, "mute");
 
-            chordBuffer = new List<Chord>();
-            soundsOngoing = new List<Sound>();
+            chordBuffer = [];
+            soundsOngoing = [];
 
             sourceID = sID;
-            sourcePosition = new Vec3d(0, 0, 0); // Not sure if necessary
+            sourcePosition = new(0, 0, 0); // Not sure if necessary
             instrumentFileLocation = location;
             instrument = inst;
             nowTime = startTime;
@@ -136,7 +136,7 @@ namespace instruments
                 IPlayer player = Array.Find(client.AllOnlinePlayers, x => x.ClientId == sourceID);
                 if (player != null && player.Entity != null)  // 1. No player if it's a block 2. Players don't have entities if too far from client
                 {
-                    sourcePosition = new Vec3d(player.Entity.Pos.X, player.Entity.Pos.Y, player.Entity.Pos.Z);
+                    sourcePosition = new(player.Entity.Pos.X, player.Entity.Pos.Y, player.Entity.Pos.Z);
                     playerExists = true;
                 }
             }
@@ -183,7 +183,7 @@ namespace instruments
                                 assetLocation = instrumentFileLocation + "/" + octaveMap[note.octave];
                                 if (instrument == "mic" || instrument.StartsWith("zmic"))
                                 {
-                                    Random rnd = new Random();
+                                    Random rnd = new();
                                     int rNum = rnd.Next(0, 5); // A number between 0 and 4
                                     switch (rNum)
                                     {
@@ -205,7 +205,7 @@ namespace instruments
                                     }
                                 }
                             }
-                            Sound newSound = new Sound(client, sourcePosition, pitch, assetLocation, -1, volume, play);
+                            Sound newSound = new(client, sourcePosition, pitch, assetLocation, -1, volume, play);
                             newSound.endTime = nowTime + note.duration;
                             if (newSound.sound == null)
                                 Debug.WriteLine("Sound creation failed (abc)!");
@@ -350,7 +350,7 @@ namespace instruments
         {
             startTime = 0;
             duration = 65535;
-            notes = new List<Note>();
+            notes = [];
         }
 
         public void AddNote(Note newNote, float minimumDuration)

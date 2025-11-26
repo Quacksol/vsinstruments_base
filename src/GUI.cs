@@ -95,7 +95,7 @@ namespace instruments
 
             foreach (string file in files)
             {
-                GuiHandbookTextPage page = new GuiHandbookTextPage();
+                GuiHandbookTextPage page = new();
                 page.Title = file;
                 allStackListItems.Add(page);
             }
@@ -312,7 +312,7 @@ namespace instruments
         }
         private bool OnSongSelect()
         {
-            SongSelectGUI songGui = new SongSelectGUI(capi, SetSong, Definitions.GetInstance().GetSongList());
+            SongSelectGUI songGui = new(capi, SetSong, Definitions.GetInstance().GetSongList());
             songGui.TryOpen();
             return true;
         }
