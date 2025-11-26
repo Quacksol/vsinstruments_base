@@ -145,7 +145,9 @@ namespace instruments
             nowTime += (dt * 1000);
             int chordCount = chordBuffer.Count;
             if (chordCount == 0)
-                ;
+            {
+                // no chords to process
+            }
             else
                 for (int i = 0; i < chordCount; i++)
                 {

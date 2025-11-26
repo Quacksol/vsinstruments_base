@@ -326,7 +326,9 @@ namespace instruments
                         charIndex++;
                         tupletDuration = GetIntFromStream(file, ref charIndex); // Should be <10 - add a check?
                         if (tupletDuration == 0)
-                            ;  // actually just do nothing. It's a slur, we don't care about them. Sticks and stones or something idk
+                        {
+                            // slur notation - ignore it
+                        }
                         break;
 
                     case ' ':
@@ -393,7 +395,9 @@ namespace instruments
 
             float nextChordDuration = nextChord.duration; // Need to remember it before it is changed
             if (currentTime > (chordStartTime + nextChordDuration))
-                ;
+            {
+                // chord already finished - skip it
+            }
             else
             {
                 if (startSync)
@@ -523,7 +527,9 @@ namespace instruments
 
             // For some reason, the char wasn't a-g, as expected... weird. Unless it's a rest.
             if (noteIndex == -1)
-                ;
+            {
+                // rest note - already handled
+            }
             else
             {
                 // Check octave modifiers
