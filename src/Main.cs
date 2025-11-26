@@ -128,13 +128,13 @@ namespace instruments
         ICoreClientAPI clientApi;
         string playerHeldItem; // The item the player is holding. If this changes, stop playback.
         bool thisClientPlaying; // Is this client currently playing, or is some other client playing?
-        List<Sound> soundList = new List<Sound>(); // For playing single notes sent by players, non-abc style
+        readonly List<Sound> soundList = new List<Sound>(); // For playing single notes sent by players, non-abc style
         List<SoundManager> soundManagers;
         bool clientSideEnable;
         bool clientSideReady = false;
         bool setupDone = false;
 
-        private Dictionary<string, string> soundLocations = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> soundLocations = new Dictionary<string, string>();
 
 
         long listenerIDClient = -1;

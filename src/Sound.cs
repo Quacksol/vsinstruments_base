@@ -10,8 +10,8 @@ namespace instruments
 {
     public class Sound
     {
-        public ILoadedSound sound;
-        public int ID;
+        public readonly ILoadedSound sound;
+        public readonly int ID;
         public float endTime;
 
         public Sound(IClientWorldAccessor client, Vec3d pos, float pitchModifier, string assetLocation, int id, float volume, bool play = true)
@@ -55,21 +55,21 @@ namespace instruments
         // An object for each client that is playing something. There is one SoundManager for each 'sound source'.
         // Each client will have a list of these
         // The server passes sounds into this, and each client updates the notes in it, per tick or so
-        public int sourceID;                // The ID of the player who is playing the sounds for this manager
+        public readonly int sourceID;                // The ID of the player who is playing the sounds for this manager
         public Vec3d sourcePosition;       // The position of the player of this manager. Will need to update as the player moves.
         private List<Chord> chordBuffer;    // The list of chords received from the server. As the tune progresses, chords from this list will be played.
         private List<Sound> soundsOngoing;  // The list of existing Sounds that exist currently.
-        private IClientWorldAccessor client;
+        private readonly IClientWorldAccessor client;
         private float nowTime = 0;
         private bool active = true;         // The manager should do Update(). False when playback should stop.
-        private string instrumentFileLocation;
-        private float volume;
-        public string instrument;
+        private readonly string instrumentFileLocation;
+        private readonly float volume;
+        public readonly string instrument;
 
-        private Dictionary<int, string> drumMap = new Dictionary<int, string>();
-        private Dictionary<int, string> octaveMap = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> drumMap = new Dictionary<int, string>();
+        private readonly Dictionary<int, string> octaveMap = new Dictionary<int, string>();
 
-        private float[,] frequencies = new float[7, 3] {
+        private readonly float[,] frequencies = new float[7, 3] {
             {0.9441f, 1.0000f, 1.0595f },  // A
             {1.0595f, 1.1223f, 1.1891f },  // B
             {1.1223f, 1.1891f, 1.2600f },  // C

@@ -56,7 +56,7 @@ namespace instruments
 
         private Chord nextChord;
         private List<Chord> chordBuffer;
-        private string file;
+        private readonly string file;
         public int charIndex;
         public float currentTime;
 
@@ -89,7 +89,7 @@ namespace instruments
         public Vec3d position;
         public string bandName;
         public string instrument;
-        private ICoreServerAPI serverAPI;
+        private readonly ICoreServerAPI serverAPI;
         private bool startSync;
 
         public ABCParser(ICoreServerAPI sAPI, int pID, string name, string f, string inst, string bn, float masterTime)

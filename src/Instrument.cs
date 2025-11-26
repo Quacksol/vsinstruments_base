@@ -19,7 +19,7 @@ namespace instruments
         private ICoreClientAPI capi;
         bool holding = false;
         public string instrument = "none";
-        protected string animation = "holdbothhands";  // just a placeholder
+        protected readonly string animation = "holdbothhands";  // just a placeholder
 
         SkillItem[] toolModes;
         WorldInteraction[] interactions;
@@ -398,14 +398,14 @@ namespace instruments
         private string bandName = "";
         private PlayMode mode = PlayMode.abc;
         private static Definitions _instance;
-        private Dictionary<int, NoteFrequency> noteMap = new Dictionary<int, NoteFrequency>();
-        private Dictionary<string, string> animMap = new Dictionary<string, string>();
+        private readonly Dictionary<int, NoteFrequency> noteMap = new Dictionary<int, NoteFrequency>();
+        private readonly Dictionary<string, string> animMap = new Dictionary<string, string>();
         private List<string> abcFiles = new List<string>();
-        private List<string> serverAbcFiles = new List<string>();
+        private readonly List<string> serverAbcFiles = new List<string>();
         private bool messageDone = false;
         private bool abcPlaying = false;
 
-        private Dictionary<string, string> instrumentTypes = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> instrumentTypes = new Dictionary<string, string>();
 
         private Definitions()
         {
