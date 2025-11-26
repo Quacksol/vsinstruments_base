@@ -169,7 +169,27 @@ namespace instruments
             MusicBlockManager.GetInstance().Reset(); // I think there's a manager for both Server and Client, so reset it I guess
             Definitions.GetInstance().Reset();
 
-            clientApi.RegisterCommand("instruments", "instrument playback commands", "[enable|disable]", ParseClientCommand);
+            clientApi.ChatCommands.Create("instruments")
+                .WithDescription("instrument playback commands")
+                .WithArgs(clientApi.ChatCommands.Parsers.Word("action"))
+                .HandleWith((args) =>
+                {
+                    string command = args[0] as string;
+                    switch (command)
+                    {
+                        case "enable":
+                            clientSideEnable = true;
+                            return TextCommandResult.Success("ABC playback enabled!");
+                        case "disable":
+                            clientSideEnable = false;
+                            ABCStopFromServer dummy = new ABCStopFromServer();
+                            dummy.fromClientID = clientApi.World.Player.ClientId;
+                            StopSounds(dummy);
+                            return TextCommandResult.Success("ABC playback disabled!");
+                        default:
+                            return TextCommandResult.Error("Syntax: .instruments [enable|disable]");
+                    }
+                });
             clientSideEnable = true;
             clientSideReady = true;
 
@@ -341,7 +361,9 @@ namespace instruments
             for (int i = 0; i < smCount; i++)
             {
                 if (soundManagers[i].Update(dt))
-                    ;
+                {
+                    // sound manager still active - continue
+                }
                 else
                 {
                     if (soundManagers[i].sourceID == clientApi.World.Player.ClientId)
@@ -375,29 +397,6 @@ namespace instruments
             }
         }
 
-        private void ParseClientCommand(int groupId, CmdArgs args)
-        {
-            string command = args.PopWord();
-            switch (command)
-            {
-                case "enable":
-                    clientSideEnable = true;
-                    clientApi.ShowChatMessage("ABC playback enabled!");
-                    break;
-                case "disable":
-                    clientSideEnable = false;
-                    clientApi.ShowChatMessage("ABC playback disabled!");
-                    {
-                        ABCStopFromServer dummy = new ABCStopFromServer();
-                        dummy.fromClientID = clientApi.World.Player.ClientId;
-                        StopSounds(dummy);
-                    }
-                    break;
-                default:
-                    clientApi.ShowChatMessage("Syntax: .instruments [enable|disable]");
-                    break;
-            }
-        }
         private void FirstTimeSetup()
         {
             // Go through the list of all instruments (in Instrument.cs) and add a sound file location for each entry.
@@ -426,15 +425,6 @@ namespace instruments
         IServerNetworkChannel serverChannelABC;
 
         long listenerID = -1;
-        string abcBaseDir;
-
-        private struct PlaybackData
-        {
-            public int ClientID;
-            public string abcData;
-            public ABCParser parser;
-            public int index;
-        }
 
         public override void StartServerSide(ICoreServerAPI api)
         {
