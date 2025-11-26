@@ -42,7 +42,7 @@ namespace instruments
             {
                 stream = File.OpenRead(path);
                 byte[] b = new byte[stream.Length];
-                UTF8Encoding temp = new UTF8Encoding(true);
+                UTF8Encoding temp = new(true);
                 while (stream.Read(b, 0, b.Length) > 0)
                 {
                     fileData = temp.GetString(b);
