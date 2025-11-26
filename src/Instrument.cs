@@ -34,10 +34,10 @@ namespace instruments
             toolModes = ObjectCacheUtil.GetOrCreate(api, "instrumentToolModes", () =>
             {
                 SkillItem[] modes = new SkillItem[4];
-                modes[(int)PlayMode.abc] = new SkillItem() { Code = new AssetLocation(PlayMode.abc.ToString()), Name = Lang.Get("ABC Mode") };
-                modes[(int)PlayMode.fluid] = new SkillItem() { Code = new AssetLocation(PlayMode.fluid.ToString()), Name = Lang.Get("Fluid Play") };
-                modes[(int)PlayMode.lockedSemiTone] = new SkillItem() { Code = new AssetLocation(PlayMode.lockedSemiTone.ToString()), Name = Lang.Get("Locked Play: Semi Tone") };
-                modes[(int)PlayMode.lockedTone] = new SkillItem() { Code = new AssetLocation(PlayMode.lockedTone.ToString()), Name = Lang.Get("Locked Play: Tone") };
+                modes[(int)PlayMode.abc] = new() { Code = new(PlayMode.abc.ToString()), Name = Lang.Get("ABC Mode") };
+                modes[(int)PlayMode.fluid] = new() { Code = new(PlayMode.fluid.ToString()), Name = Lang.Get("Fluid Play") };
+                modes[(int)PlayMode.lockedSemiTone] = new() { Code = new(PlayMode.lockedSemiTone.ToString()), Name = Lang.Get("Locked Play: Semi Tone") };
+                modes[(int)PlayMode.lockedTone] = new() { Code = new(PlayMode.lockedTone.ToString()), Name = Lang.Get("Locked Play: Tone") };
 
                 if (capi != null)
                 {
@@ -54,21 +54,21 @@ namespace instruments
             }
             );
 
-            interactions = ObjectCacheUtil.GetOrCreate(api, "InstrumentInteractions", () =>
+            interactions = ObjectCacheUtil.GetOrCreate<WorldInteraction[]>(api, "InstrumentInteractions", () =>
             {
-                return new WorldInteraction[]
-                {
-                    new WorldInteraction()
+                return
+                [
+                    new()
                     {
                         ActionLangCode = "Perform Action",
                         MouseButton = EnumMouseButton.Right,
                     },
-                    new WorldInteraction()
+                    new()
                     {
                         ActionLangCode = "Open Menu",
                         HotKeyCode = "f",
                     }
-                };
+                ];
             }
             );
         }
