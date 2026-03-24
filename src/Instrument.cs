@@ -1,4 +1,4 @@
-﻿using System;       // Action<>
+using System;       // Action<>
 using System.Collections.Generic;
 using System.Diagnostics; // debug todo remove
 using System.IO;    // Open files
@@ -111,7 +111,8 @@ namespace instruments
 
                 if (GetPlayMode(slot) != PlayMode.abc)
                 {
-                    Vec3d pos = new Vec3d(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
+                    var epos = byEntity.GetPos();
+                    Vec3d pos = new Vec3d(epos.X, epos.Y, epos.Z);
                     NoteStart newNote = new NoteStart();
                     newNote.pitch = currentNote.pitch;
                     newNote.positon = pos;
@@ -148,7 +149,8 @@ namespace instruments
                 // Additionally, update the sound packet
                 if (GetPlayMode(slot) != PlayMode.abc)
                 {
-                    Vec3d pos = new Vec3d(byEntity.Pos.X, byEntity.Pos.Y, byEntity.Pos.Z);
+                    var epos = byEntity.GetPos();
+                    Vec3d pos = new Vec3d(epos.X, epos.Y, epos.Z);
                     NoteUpdate newNote = new NoteUpdate();
                     newNote.pitch = currentNote.pitch;
                     newNote.positon = pos;
@@ -228,13 +230,13 @@ namespace instruments
             switch (GetPlayMode(slot))
             {
                 case PlayMode.lockedTone:
-                    AngleToPitchLockedTone(byEntity.Pos.Pitch);
+                    AngleToPitchLockedTone(byEntity.GetPos().Pitch);
                     break;
                 case PlayMode.lockedSemiTone:
-                    AngleToPitchLockedSemiTone(byEntity.Pos.Pitch);
+                    AngleToPitchLockedSemiTone(byEntity.GetPos().Pitch);
                     break;
                 case PlayMode.fluid:
-                    AngleToPitch(byEntity.Pos.Pitch);
+                    AngleToPitch(byEntity.GetPos().Pitch);
                     break;
                 case PlayMode.abc:
                     // No logic for this mode; all handled by the server.
